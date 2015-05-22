@@ -17,7 +17,9 @@ $siteroot = getenv('SITEROOT');
 */
 
 $app->get($siteroot, function() use ($app) {
-    return "Welcome to Slidelab";
+    $siteroot = getenv('SITEROOT');
+    $link = $siteroot . '/slide/new/';
+    return "Welcome to Slidelab. <a href='$link'>Upload a slide to analyze.</a>";
 });
 
 $app->get($siteroot . '/test', function() use ($app) {
@@ -34,9 +36,7 @@ $app->post($siteroot . '/slide/new/', function() use ($app) {
     $slide = Request::file('slide');
     $result = $manager->handleUpload($slide);
     if($result !== false) {
-        $viewLink = $siteroot . '/slide/view/' . $result;
-        $analyzeLink = $siteroot . '/slide/analyze/' . $result;
-        return "<a href='$viewLink'>Slide uploaded</a> - <a href='$analyzeLink'>Analyze It</a>";
+        return redirect($siteroot . '/slide/analyze/' . $result);
     }
     return "Slide failed to upload. Please try again.";
 });
