@@ -1,0 +1,6 @@
+RewriteEngine on
+RewriteBase /
+
+RewriteCond %{REQUEST_URI} !^/slidelab/public/
+RewriteRule ^(.*)$ /slidelab/public/$1 [L]
+
