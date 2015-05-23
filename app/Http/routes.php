@@ -56,5 +56,21 @@ $app->get($siteroot . '/slide/view/{uuid}', function($uuid) use ($app) {
 $app->get($siteroot . '/slide/analyze/{uuid}', function($uuid) use ($app) {
     $siteroot = getenv('SITEROOT');
     $imagePath = $siteroot . '/slide/view/' . $uuid;
-    return view("analyzer", ['image' => $imagePath]);
+    $manager = new \App\ImageManager();
+    $palette = $manager->colorPalette($uuid);
+    $imageSize = $manager->imageSize($uuid);
+    if (count($palette) > 1) {
+        $primaryColor = $palette[0];
+        $secondaryColor =  $palette[1];
+        $colorDifference = $manager->colorDifference($primaryColor, $secondaryColor);
+        $brightnessDifference = $manager->brightnessDifference($primaryColor, $secondaryColor);
+        $luminosityContrast = $manager->luminosityContrast($primaryColor, $secondaryColor);
+    } else {
+        $colorDifference = null;
+        $brightnessDifference = null;
+        $luminosityContrast = null;
+    }
+    return view("analyzer", ['image' => $imagePath, 'palette' => $palette, 'colorDifference' => $colorDifference,
+        'brightnessDifference' => $brightnessDifference, 'luminosityContrast' => $luminosityContrast,
+        'imageSize' => $imageSize]);
 });

@@ -35,6 +35,22 @@ Uploaded slide:<br/> <img src="<?php echo $image . "?h=400"; ?>" />
 <div>
     Aspect ratio when displayed on 1024x768 projector (1.333):<br/> <img src="<?php echo $image . "?w=512&h=384&fit=stretch"; ?>" />
 </div>
-
+<div>
+    Slide size: <?php echo "$imageSize[0] x $imageSize[1]";?><br/>
+    Slide aspect ratio: <?php echo round($imageSize[0] / $imageSize[1],2); ?>
+</div>
+<div>
+    Color palette analysis:<br/>
+    <?php
+        foreach($palette as $color) {
+            echo "Color: $color<br/>";
+        }
+        if(!is_null($colorDifference)) {
+            echo "<div>Color difference (ideal result is > 500): $colorDifference</div>";
+            echo "<div>Brightness difference (ideal result is > 125): $brightnessDifference</div>";
+            echo "<div>Luminosity contrast (ideal result is > 5): $luminosityContrast</div>";
+        }
+?>
+</div>
 </body>
 </html>
